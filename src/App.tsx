@@ -22,6 +22,19 @@ const getThreadClass = (thread: Worker) => {
   return `col-thread-${thread}`;
 };
 
+const getThreadText = (thread: Worker) => {
+  switch (thread) {
+    case "_main_":
+      return "⛪ MAIN";
+    case "_th__1_":
+      return "👽 STRA";
+    case "_th__2_":
+      return "📞 COMM";
+    case "_th__3_":
+      return "⌛ API";
+  }
+};
+
 export interface IApiEntry {
   id?: number;
   level?: string;
@@ -251,9 +264,9 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
             this.props.entry.thread as Worker
           )}`}
         >
-          {this.props.entry.thread}
+          {getThreadText(this.props.entry.thread as Worker)}
         </div>
-        <div className="column is-10 has-text-left is-size-6 is-family-monospace">
+        <div className="column is-9 has-text-left is-size-6 is-family-monospace has-text-grey">
           <span>{this.props.entry.message}</span>
         </div>
       </div>
