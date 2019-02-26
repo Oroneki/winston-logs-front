@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import logo from "./logo.svg";
 import "./App.scss";
 import { tempdata } from "./temp_data";
 import { Chart } from "chart.js";
@@ -24,18 +23,19 @@ const getThreadClass = (thread: Worker) => {
 
 const getThreadText = (thread: Worker) => {
   switch (thread) {
-    case "_main_":
+    case 0:
       return "⛪ MAIN";
-    case "_th__1_":
+    case 1:
       return "👽 STRA";
-    case "_th__2_":
+    case 2:
       return "📞 COMM";
-    case "_th__3_":
+    case 3:
       return "⌛ API";
   }
 };
 
 export interface IApiEntry {
+  id: number;
   cxt?: string;
   message: string;
   w: number;
@@ -106,7 +106,7 @@ class App extends Component<{}, IAppState> {
 
   updateChart() {
     console.log("didMount:", this.canvas);
-    const key: keyof IApiEntry = "memory_rss";
+    const key: keyof IApiEntry = "mhu";
     var myChart = new Chart(this.canvas.current!, {
       type: "line",
       options: {
@@ -131,15 +131,15 @@ class App extends Component<{}, IAppState> {
           //   label: "ext"
           // },
           {
-            data: dataTransf(this.state.entries, "_main_", key) as number[],
+            data: dataTransf(this.state.entries, 0, key) as number[],
             label: "_main_mhu"
           },
           {
-            data: dataTransf(this.state.entries, "_th__1_", key) as number[],
+            data: dataTransf(this.state.entries, 1, key) as number[],
             label: "_1_mhu"
           },
           {
-            data: dataTransf(this.state.entries, "_th__3_", key) as number[],
+            data: dataTransf(this.state.entries, 3, key) as number[],
             label: "_3_mhu"
           }
         ]
@@ -187,6 +187,8 @@ class App extends Component<{}, IAppState> {
                     <option value={undefined}>-----</option>
                     <option value="debug">Debug</option>
                     <option value="info">Info</option>
+                    <option value="error">Error</option>
+                    <option value="verbose">Verbose</option>
                     <option value="warn">Warn</option>
                   </select>
                 </div>
@@ -207,10 +209,10 @@ class App extends Component<{}, IAppState> {
                     }}
                   >
                     <option value={undefined}>-----</option>
-                    <option value="_main_">_main_</option>
-                    <option value="_th__1_">_th__1_</option>
-                    <option value="_th__2_">_th__2_</option>
-                    <option value="_th__3_">_th__3_</option>
+                    <option value={0}>Main</option>
+                    <option value={1}>Strategy</option>
+                    <option value={2}>Communicator</option>
+                    <option value={3}>Api</option>
                   </select>
                 </div>
               </div>
@@ -252,16 +254,16 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
       <div className="columns is-vcentered">
         <div
           className={`column is-1 is-size-7 ${getLevelClass(this.props.entry
-            .level as Level)}`}
+            .l as Level)}`}
         >
-          {this.props.entry.level}
+          {this.props.entry.l}
         </div>
         <div
           className={`column is-1 is-size-7 has-text-weight-bold ${getThreadClass(
-            this.props.entry.thread as Worker
+            this.props.entry.w as Worker
           )}`}
         >
-          {getThreadText(this.props.entry.thread as Worker)}
+          {getThreadText(this.props.entry.w as Worker)}
         </div>
         <div className="column is-9 has-text-left is-size-6 is-family-monospace has-text-grey">
           <span>{this.props.entry.message}</span>
