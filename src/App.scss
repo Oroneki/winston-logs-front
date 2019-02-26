@@ -1,3 +1,39 @@
+@import "../node_modules/bulma/bulma.sass";
 .App {
   text-align: center;
+}
+
+.col-level-warn {
+  color: $black;
+  background-color: $red;
+}
+
+.col-level-info {
+  color: $white;
+  background-color: $green;
+}
+
+.col-level-debug {
+  color: $white;
+  background-color: $purple;
+}
+
+.col-thread-_main_ {
+  color: $black;
+  background-color: $grey-light;
+}
+
+.col-thread-_th__3_ {
+  color: $yellow;
+  background-color: $grey-dark;
+}
+
+.col-thread-_th__1_ {
+  color: $cyan;
+  background-color: $grey-lighter;
+}
+
+.col-thread-_th__2_ {
+  color: $turquoise;
+  background-color: $grey;
 }

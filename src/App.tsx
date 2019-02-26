@@ -14,6 +14,27 @@ type Worker = 0 | 1 | 2 | 3;
 const levels = new Set(["debug", "info", "warn", "error", "verbose"]);
 const workers = new Set([0, 1, 2, 3]);
 
+const getLevelClass = (level: Level) => {
+  return `col-level-${level}`;
+};
+
+const getThreadClass = (thread: Worker) => {
+  return `col-thread-${thread}`;
+};
+
+const getThreadText = (thread: Worker) => {
+  switch (thread) {
+    case "_main_":
+      return "⛪ MAIN";
+    case "_th__1_":
+      return "👽 STRA";
+    case "_th__2_":
+      return "📞 COMM";
+    case "_th__3_":
+      return "⌛ API";
+  }
+};
+
 export interface IApiEntry {
   cxt?: string;
   message: string;
@@ -229,9 +250,20 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
   render() {
     return (
       <div className="columns is-vcentered">
-        <div className="column is-1">{this.props.entry.level}</div>
-        <div className="column is-1">{this.props.entry.thread}</div>
-        <div className="column is-10 has-text-left is-size-6 is-family-monospace">
+        <div
+          className={`column is-1 is-size-7 ${getLevelClass(this.props.entry
+            .level as Level)}`}
+        >
+          {this.props.entry.level}
+        </div>
+        <div
+          className={`column is-1 is-size-7 has-text-weight-bold ${getThreadClass(
+            this.props.entry.thread as Worker
+          )}`}
+        >
+          {getThreadText(this.props.entry.thread as Worker)}
+        </div>
+        <div className="column is-9 has-text-left is-size-6 is-family-monospace has-text-grey">
           <span>{this.props.entry.message}</span>
         </div>
       </div>
