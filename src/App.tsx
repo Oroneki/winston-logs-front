@@ -7,26 +7,25 @@ import { Chart } from "chart.js";
 
 const API_ENDPOINT = "http://localhost:5000/api";
 
-type Level = "debug" | "info" | "warn";
+type Level = "debug" | "info" | "warn" | "error" | "verbose";
 
-type Worker = "_main_" | "_th__1_" | "_th__2_" | "_th__3_";
+type Worker = 0 | 1 | 2 | 3;
 
-const levels = new Set(["debug", "info", "warn"]);
-const workers = new Set(["_main_", "_th__1_", "_th__2_", "_th__3_"]);
+const levels = new Set(["debug", "info", "warn", "error", "verbose"]);
+const workers = new Set([0, 1, 2, 3]);
 
 export interface IApiEntry {
-  id?: number;
-  level?: string;
-  timestamp?: string;
-  thread?: string;
-  message?: string;
-  memory_rss?: number;
-  memory_heap_total?: number;
-  memory_heap_used?: number;
-  memory_external?: number;
-  cpu_user?: number;
-  cpu_system?: number;
-  ms?: string;
+  cxt?: string;
+  message: string;
+  w: number;
+  mhu: number;
+  mht: number;
+  mrss: number;
+  t: string;
+  l: string;
+  ct: number;
+  cl: number;
+  p?: string;
 }
 
 const apiCall = async (page: number = 1, level?: Level, worker?: Worker) => {
@@ -44,9 +43,7 @@ const dataTransf = (
   filter: Worker,
   key: keyof IApiEntry
 ): number[] => {
-  return dataArr.map(e =>
-    e.thread === filter ? e[key] : Number.NaN
-  ) as number[];
+  return dataArr.map(e => (e.w === filter ? e[key] : Number.NaN)) as number[];
 };
 
 interface IAppState {
