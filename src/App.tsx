@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./App.scss";
-import { tempdata } from "./temp_data";
+// import { tempdata } from "./temp_data";
 import { Chart } from "chart.js";
 
 const API_ENDPOINT = "http://localhost:5000/api";
@@ -81,7 +81,8 @@ class App extends Component<{}, IAppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      entries: tempdata,
+      // entries: tempdata,
+      entries: [],
       page: 1,
       worker: undefined,
       level: undefined
@@ -265,7 +266,12 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
         >
           {getThreadText(this.props.entry.w as Worker)}
         </div>
-        <div className="column is-9 has-text-left is-size-6 is-family-monospace has-text-grey">
+
+        <div className={`column is-1 is-size-7`}>{this.props.entry.cxt}</div>
+
+        <div className={`column is-1 is-size-7`}>{this.props.entry.p}</div>
+
+        <div className="column is-8 has-text-left is-size-6 is-family-monospace has-text-grey">
           <span>{this.props.entry.message}</span>
         </div>
       </div>
