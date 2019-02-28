@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./App.scss";
-// import { tempdata } from "./temp_data";
+import { tempdata } from "./temp_data";
 import { Chart } from "chart.js";
 
 const API_ENDPOINT = "http://localhost:5000/api";
@@ -34,9 +34,43 @@ const getThreadText = (thread: Worker) => {
   }
 };
 
+const getOffset = (w: Worker) => {
+  switch (w) {
+    case 0:
+      return "";
+    case 1:
+      return "is-offset-3";
+    case 2:
+      return "is-offset-6";
+    case 3:
+      return "is-offset-9";
+
+    default:
+      return "";
+  }
+};
+
+const getbgColor = (l: Level) => {
+  switch (l) {
+    case "debug":
+      return "has-background-grey";
+    case "info":
+      return "has-background-primary";
+    case "error":
+      return "has-background-danger";
+    case "warn":
+      return "has-background-warning";
+    case "verbose":
+      return "has-background-info";
+
+    default:
+      break;
+  }
+};
+
 export interface IApiEntry {
   id: number;
-  cxt?: string;
+  ctx?: string;
   message: string;
   w: number;
   mhu: number;
@@ -81,8 +115,8 @@ class App extends Component<{}, IAppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      // entries: tempdata,
-      entries: [],
+      entries: tempdata,
+      // entries: [],
       page: 1,
       worker: undefined,
       level: undefined
@@ -254,25 +288,23 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
     return (
       <div className="columns is-vcentered">
         <div
-          className={`column is-1 is-size-7 ${getLevelClass(this.props.entry
-            .l as Level)}`}
+          className={`column is-3 has-background-info ${getOffset(this.props
+            .entry.w as Worker)} ${getbgColor(this.props.entry.l as Level)}`}
         >
-          {this.props.entry.l}
-        </div>
-        <div
-          className={`column is-1 is-size-7 has-text-weight-bold ${getThreadClass(
-            this.props.entry.w as Worker
-          )}`}
-        >
-          {getThreadText(this.props.entry.w as Worker)}
-        </div>
-
-        <div className={`column is-1 is-size-7`}>{this.props.entry.cxt}</div>
-
-        <div className={`column is-1 is-size-7`}>{this.props.entry.p}</div>
-
-        <div className="column is-8 has-text-left is-size-6 is-family-monospace has-text-grey">
-          <span>{this.props.entry.message}</span>
+          <div className="card">
+            <header className="card-header">
+              <p className="card-header-title">{this.props.entry.ctx}</p>
+            </header>
+            <div className="card-content">
+              <div className="content">
+                <p className="has-text-weight-bold">{this.props.entry.p}</p>
+                <p className="is-size-7">{this.props.entry.message}</p>
+              </div>
+            </div>
+            <footer className="card-footer">
+              <span className="card-footer-item">{this.props.entry.t}</span>
+            </footer>
+          </div>
         </div>
       </div>
     );
