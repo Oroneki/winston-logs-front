@@ -39,11 +39,11 @@ const getOffset = (w: Worker) => {
     case 0:
       return "";
     case 1:
-      return "is-offset-3";
+      return "is-offset-2";
     case 2:
-      return "is-offset-6";
+      return "is-offset-4";
     case 3:
-      return "is-offset-9";
+      return "is-offset-6";
 
     default:
       return "";
@@ -285,27 +285,52 @@ class Listao extends Component<{ entries: IApiEntry[] }> {
 
 class LogEntryView extends Component<{ entry: IApiEntry }> {
   render() {
+    const card = (
+      <div
+        className={`column is-6 has-background-info ${getbgColor(this.props
+          .entry.l as Level)}`}
+      >
+        <div className="card">
+          <header className="card-header">
+            <p className="card-header-title">{this.props.entry.ctx}</p>
+          </header>
+          <div className="card-content">
+            <div className="content">
+              <p className="has-text-weight-bold">{this.props.entry.p}</p>
+              <p className="is-size-7">{this.props.entry.message}</p>
+            </div>
+          </div>
+          <footer className="card-footer">
+            <span className="card-footer-item">{this.props.entry.t}</span>
+          </footer>
+        </div>
+      </div>
+    );
+
+    const workerInfo = (
+      <div className="column is-2">
+        {getThreadText(this.props.entry.w as Worker)}
+      </div>
+    );
+
+    const timestamp = <div className="column is-2">{this.props.entry.t}</div>;
+
+    const extra = (
+      <div className="column is-2">
+        <p> {this.props.entry.ctx} </p>
+        <p> {this.props.entry.p} </p>
+      </div>
+    );
+
     return (
       <div className="columns is-vcentered">
-        <div
-          className={`column is-3 has-background-info ${getOffset(this.props
-            .entry.w as Worker)} ${getbgColor(this.props.entry.l as Level)}`}
-        >
-          <div className="card">
-            <header className="card-header">
-              <p className="card-header-title">{this.props.entry.ctx}</p>
-            </header>
-            <div className="card-content">
-              <div className="content">
-                <p className="has-text-weight-bold">{this.props.entry.p}</p>
-                <p className="is-size-7">{this.props.entry.message}</p>
-              </div>
-            </div>
-            <footer className="card-footer">
-              <span className="card-footer-item">{this.props.entry.t}</span>
-            </footer>
-          </div>
-        </div>
+        {this.props.entry.w === 0
+          ? [card, workerInfo, extra, timestamp]
+          : this.props.entry.w === 1
+          ? [workerInfo, card, extra, timestamp]
+          : this.props.entry.w === 2
+          ? [timestamp, workerInfo, card, extra]
+          : [timestamp, extra, workerInfo, card]}
       </div>
     );
   }
