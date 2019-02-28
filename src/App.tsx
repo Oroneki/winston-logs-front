@@ -323,15 +323,18 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
     );
 
     return (
-      <div className="columns is-vcentered">
-        {this.props.entry.w === 0
-          ? [card, workerInfo, extra, timestamp]
-          : this.props.entry.w === 1
-          ? [workerInfo, card, extra, timestamp]
-          : this.props.entry.w === 2
-          ? [timestamp, workerInfo, card, extra]
-          : [timestamp, extra, workerInfo, card]}
-      </div>
+      <>
+        <div className="columns is-vcentered">
+          {this.props.entry.w === 0
+            ? [card, workerInfo, extra, timestamp]
+            : this.props.entry.w === 1
+            ? [workerInfo, card, extra, timestamp]
+            : this.props.entry.w === 2
+            ? [timestamp, workerInfo, card, extra]
+            : [timestamp, extra, workerInfo, card]}
+        </div>
+        <div className="columns is-vcentered" />
+      </>
     );
   }
 }
