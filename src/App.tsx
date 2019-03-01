@@ -24,13 +24,14 @@ const getThreadClass = (thread: Worker) => {
 const getThreadText = (thread: Worker) => {
   switch (thread) {
     case 0:
-      return "⛪ MAIN";
+      return <i className="far fa-eye" />;
     case 1:
-      return "👽 STRA";
+      return <i className="fas fa-brain" />;
     case 2:
-      return "📞 COMM";
+      return <i className="fas fa-wifi" />;
+
     case 3:
-      return "⌛ API";
+      return <i className="fas fa-futbol" />;
   }
 };
 
@@ -290,35 +291,37 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
         className={`column is-6 has-background-info ${getbgColor(this.props
           .entry.l as Level)}`}
       >
-        <div className="card">
-          <header className="card-header">
-            <p className="card-header-title">{this.props.entry.ctx}</p>
-          </header>
+        <div className="card has-background-light">
           <div className="card-content">
             <div className="content">
-              <p className="has-text-weight-bold">{this.props.entry.p}</p>
-              <p className="is-size-7">{this.props.entry.message}</p>
+              <span className="is-size-6 has-text-weight-bold">
+                {this.props.entry.ctx}
+              </span>
+              <br />
+              <span className="is-size-6">{this.props.entry.p}</span>
+              <br />
+              <p className="is-size-6">{this.props.entry.message}</p>
             </div>
           </div>
-          <footer className="card-footer">
-            <span className="card-footer-item">{this.props.entry.t}</span>
-          </footer>
         </div>
       </div>
     );
 
     const workerInfo = (
       <div className="column is-2">
-        {getThreadText(this.props.entry.w as Worker)}
+        <p className="is-size-1 has-text-grey-light">
+          {getThreadText(this.props.entry.w as Worker)}
+        </p>
       </div>
     );
 
-    const timestamp = <div className="column is-2">{this.props.entry.t}</div>;
+    const timestamp = (
+      <div className="column is-2 has-text-grey">{this.props.entry.t}</div>
+    );
 
     const extra = (
-      <div className="column is-2">
-        <p> {this.props.entry.ctx} </p>
-        <p> {this.props.entry.p} </p>
+      <div className="column is-2 has-text-grey-light is-size-7">
+        <p> {this.props.entry.l} </p>
       </div>
     );
 
@@ -333,7 +336,9 @@ class LogEntryView extends Component<{ entry: IApiEntry }> {
             ? [timestamp, workerInfo, card, extra]
             : [timestamp, extra, workerInfo, card]}
         </div>
-        <div className="columns is-vcentered" />
+        <div className="columns is-vcentered">
+          <div className="column" />
+        </div>
       </>
     );
   }
